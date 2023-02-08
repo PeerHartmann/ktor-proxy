@@ -22,8 +22,14 @@ fun main() {
 
         routing {
             route("/*") {
+
                 handle {
-                    call.respondText("Ich bin das Backend ${call.request.uri} ${call.request.httpMethod}")
+                    if (call.request.header("Authorization") == null) {
+                        call.respond(HttpStatusCode.Unauthorized);
+
+                    } else {
+                        call.respondText("Ich bin das Backend ${call.request.uri} ${call.request.httpMethod}\n AccessToken ${call.request.header("Authorization")}")
+                    }
                 }
             }
 
